@@ -9,28 +9,49 @@
 %                   np = 4, 6     Adaptive parameters
 %----------------------------------------------------------------------
 
-global Ay By gamma w A gP gPm;
-
-sim_str = strcat('sim0',num2str(gP_1),'_');
-% options = odeset('OutputFcn','odeplot');
-options = '';
+global Ay By c1 c2 Gamma gamma kp a w;
 
 kp = 1;
-km = 1;
-
-Z = [7];
-P = [1 -2 1];
+Z = [1];
+P = [1 2 1];
 ss_H = canon(ss(tf(kp*Z,P)), 'companion'); % Planta
 [Ay,By,Cy,~,~] = ctrbf(ss_H.A,ss_H.B,ss_H.C);
 
-Zm = [1];
-Pm = [1 2 1];
-ss_Hm = canon(ss(tf(km*Zm,Pm)), 'companion'); % Planta
-[Aym,Bym,Cym,~,~] = ctrbf(ss_Hm.A,ss_Hm.B,ss_Hm.C);
+a = [1 1];
+w = [1 1.1];
+c1 = 2;
+c2 = 2;
+Gamma = eye(2);
+gamma = 1;
+tfinal = 20;
 
 % Initialization
-y0  = 0;
-ym0 = 0;
+y0  = [10 0]';
+z10 = 10;
+z20 = 0;
 theta0 = [0 0]';
-init = [y0' ym0' theta0']';
+p0 = 2;
+init = [y0' z10 z20 theta0' p0]';
 
+%% Plots
+[T,X] = ode23s('backstepping',tfinal,init,'');
+
+y      = X(:,1);
+theta =  X(:,5:6);
+p = X(:,7);
+
+yr = a(1)*sin(w(1).*T) + a(2)*sin(w(2).*T);
+e =  y - yr;
+
+%Set matlab interpreter to latex
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
+set(groot, 'defaultLegendInterpreter','latex');
+set(groot, 'defaultTextInterpreter','latex');
+
+figure(1)
+clf
+plot(T,y,T,yr);grid;shg
+legend('y','yr','Location','SouthEast')
+title('$\epsilon$')
+print -depsc2 en3t0
+%---------------------------------------------------------------------

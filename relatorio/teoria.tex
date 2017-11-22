@@ -33,7 +33,7 @@ z_1 &= x_1 - y_r \\
 \end{align}
 
 onde $\alpha$ é a variável de controle virtual. O primeiro passo para a
-elaboração do método é começar pela primeira equação \ref{eq:planta},
+elaboração do método é começar pela equação \ref{eq:planta},
 considerando $x_2$ como uma variável de controle virtual. A derivada do erro de
 rastreamento $z_1$ é dada por:
 
@@ -49,7 +49,7 @@ Podemos projetar a primeira função estabilizante $\alpha_1$ como:
 \end{equation}
 
 onde $c_1$ é uma constante positiva e $\hat{\theta}$ é uma estimativa de
-$\theta$. Consideremos a fun;áo de Lyapunov:
+$\theta$. Consideremos a função de Lyapunov:
 
 \begin{equation}
 V_1 = \frac{1}{2}z_1^2 +
@@ -166,8 +166,8 @@ x_1}x_2 \right. \notag\\
 x_1}x_2 \right. \notag\\
 &\phantom{{}=1} \left. - \frac{\partial\alpha_1}{\partial 
 \hat{\theta}}\dot{\hat{\theta}} - \frac{\partial\alpha_1}{\partial y_r}\dot{y}_r
-\right) + \frac{|k_p|}{\gamma}\tilde{p} \,
-\left(\dot{\tilde{p}}-\text{sign}(k_p)\gamma\bar{u}z_2\right)
+\right) - \frac{|k_p|}{\gamma}\tilde{p} \,
+\left(\dot{\hat{p}}+\text{sign}(k_p)\gamma\bar{u}z_2\right)
 \label{eq:dotV2}
 \end{align}
 
@@ -176,7 +176,7 @@ Escolhemos $\alpha_2$ como:
 \begin{equation}
 \alpha_2 = -c_2z_2 - z_1 - \hat{\theta}^\intercal(\phi_2 -
 \frac{\partial\alpha_1}{\partial x_1}\phi_1) + \frac{\partial\alpha_1}{\partial
-x_1}x_2 + \frac{\partial\alpha_1}{\partial \hat{\theta}}\hat{\theta} +
+x_1}x_2 + \frac{\partial\alpha_1}{\partial \hat{\theta}}\dot{\hat{\theta}} +
 \frac{\partial\alpha_1}{\partial y_r} \dot{y}_r
 \label{eq:alpha2}
 \end{equation}
@@ -185,8 +185,9 @@ Substituindo a eq.\ref{eq:alpha2} em eq.\ref{eq:dotV2}, obtemos:
 
 \begin{align}
 \dot{V} &= -c_1z_1^2 -c_2z_2^2 +
-\tilde{\theta}^\intercal(\tau_2-\Gamma^{-1}\dot{\hat{\theta}}) + \frac{|k_p|}{\gamma}\tilde{p} \,
-\left(\dot{\tilde{p}}-\text{sign}(k_p)\gamma\bar{u}z_2\right)
+\tilde{\theta}^\intercal(\tau_2-\Gamma^{-1}\dot{\hat{\theta}}) -
+\frac{|k_p|}{\gamma}\tilde{p} \,
+\left(\dot{\hat{p}}+\text{sign}(k_p)\gamma\bar{u}z_2\right)
 \end{align}
 
 A lei de atualização dos parâmetros é, portanto:
@@ -207,7 +208,6 @@ Neste trabalho, consideramos o sistema:
 Neste caso específico, temos:
 \begin{align}
 \theta &= \left[ a_0 \quad a_1 \right]^\intercal\\
-\nonumber \phi_1 &= \left[ 0 \quad y \right]^\intercal\\
-\nonumber \phi_2 &= \left[ y \quad 0 \right]^\intercal\\
-\label{eq:planta2}
+\nonumber \phi_1 &= \left[ 0 \quad -y \right]^\intercal\\
+\nonumber \phi_2 &= \left[ -y \quad 0 \right]^\intercal
 \end{align}
