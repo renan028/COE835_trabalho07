@@ -1,5 +1,5 @@
 %---------------------------------------------------------------------
-\section{Backstepping - Formulação teórica}
+\section{Backstepping - Formulação teórica sem observador}
 
 Backstepping é um método recursivo de controle adaptativo baseado em Lyapunov e
 proposto no começo da década de 90. A ideia é projetar um controle recursivo
@@ -197,6 +197,8 @@ A lei de atualização dos parâmetros é, portanto:
 \dot{\hat{\theta}} &= \Gamma\tau_2 
 \end{align}
 
+\section{Backstepping - Formulação teórica com observador}
+
 Neste trabalho, consideramos o sistema:
 
 \begin{align}
@@ -205,9 +207,101 @@ Neste trabalho, consideramos o sistema:
 \label{eq:planta2}
 \end{align}
 
-Neste caso específico, temos:
+onde os parâmetros $a_1, a_0 e k_p$ são desconehcidos. Para esta formulação
+apenas a saída do sistema $y$ está disponível, portanto $x_2$ não é conhecido e
+deve ser estimado. Podemos reescrever o sistema \ref{eq:planta2}:
+
 \begin{align}
-\theta &= \left[ a_0 \quad a_1 \right]^\intercal\\
-\nonumber \phi_1 &= \left[ 0 \quad -y \right]^\intercal\\
-\nonumber \phi_2 &= \left[ -y \quad 0 \right]^\intercal
+\nonumber \dot{x} &= Ax - F(y,u)^\intercal\theta \\
+A &= 
+\begin{bmatrix}
+0 & 1\\
+0 & 0
+\end{bmatrix}, F(y,u)^\intercal = 
+\nonumber \begin{bmatrix}
+B(u) & \Phi(y)
+\end{bmatrix}, \Phi(y) = 
+\begin{bmatrix}
+-y & 0\\
+0 & -y
+\end{bmatrix}, B(u) = 
+\begin{bmatrix}
+0\\
+u
+\end{bmatrix}, \theta =
+\begin{bmatrix}
+k_p \\
+a_1 \\
+a_0
+\end{bmatrix} \\
+\nonumber y &= e_1^\intercal x \\
+\nonumber e_1 &= 
+\begin{bmatrix}
+1 \\
+0
+\end{bmatrix} \\
 \end{align}
+
+Para estimar os estados, utilizamos os filtros abaixo:
+
+\begin{align}
+\dot{\xi} &= A_0\xi + ky \\
+\nonumber \dot{\Xi}^\intercal &= A_0\Xi^\intercal + \Phi(y) \\
+\nonumber \dot{\lambda} &= A_0\lambda + e_2u \\
+\nonumber v_i &= A_0^i\lambda \\
+\nonumber k &=
+\begin{bmatrix}
+k_1\\k_2
+\end{bmatrix}, A_0 = A - ke_1^\intercal =  
+\begin{bmatrix}
+-k_1 & 1\\-k_2 & 0
+\end{bmatrix}
+\end{align}
+
+Os valores de $k$ devem ser escolhidos de forma que $A_0$ seja Hurwitz. O estado
+estimado é dado por:
+
+\begin{align}
+\hat{x} = \xi + \Xi^\intercal\theta + \sum_{i=0}^{m}b_iv_i
+\end{align} 
+
+Porém, este estimador não pode ser estimado, pois $\theta$ não é conhecido. A
+dinâmico do observador pode ser descrita como:
+
+\begin{align}
+\dot{\hat{x}} &= \dot{\xi} + \dot{\Xi}^\intercal\theta +
+\sum_{i=0}^{m}b_i\dot{v}_i \\
+\nonumber &= (A_0\xi + ky) + (A_0\Xi^\intercal +
+\Phi)\theta + \sum_{i=0}^{m}b_iA_0^i(A_0\lambda + e_2u) \\
+\nonumber &= A_0(\xi + \Xi^\intercal\theta + \sum_{i=0}^{m}b_iv_i) + ky +
+\Phi\theta + Bu\\
+\nonumber &= A_0\hat{x} + ky + \Phi\theta + Bu
+\end{align} 
+
+Podemos reescrever a dinâmica da saída $y$:
+
+\begin{align}
+\dot{y} &= x_2 + \phi^\intercal\theta\\
+\nonumber &= k_pv_{0,2} + \xi_2 + \bar{\omega}^\intercal\theta + \epsilon_2 \\
+\nonumber \bar{\omega}^\intercal &= 
+\begin{bmatrix}
+0 & (\Xi_2+\phi_1^\intercal)
+\end{bmatrix}
+\end{align}
+
+Desta forma, o sistema \ref{eq:planta2} pode ser representado com os estados do
+observador:
+\begin{align}
+\dot{y} &= k_pv_{0,2} + \xi_2 + \bar{\omega}^\intercal\theta + \epsilon_2\\
+\nonumber \dot{v}_{0,2} = u - k_2v_{0,1}\\
+\end{align}
+
+O projeto backstepping agora segue como na seção anterior. Primeiro, fazemos a
+mudança de coordenadas em \textbf{z}:
+
+\begin{align}
+z_1 &= y - y_r \\
+\nonumber z_2 = v_{0,2} - \alpha_{1} - \hat{\rho}\dot{y_r}
+\end{align}
+
+onde $\rho$ é estimativa de $\frac{1}{k_p}$

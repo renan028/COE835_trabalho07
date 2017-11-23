@@ -7,6 +7,7 @@
 %  Backstepping  :  n  = 2     Second and third order plant
 %                   n* = 2     Relative degree
 %                   np = 4, 6     Adaptive parameters
+% Caso sem observador
 %----------------------------------------------------------------------
 
 function dx = backstepping(t,x)
@@ -14,20 +15,21 @@ function dx = backstepping(t,x)
 global Ay By c1 c2 Gamma gamma kp a w;
 
 y      = x(1:2);
-z1     = x(3);
-z2     = x(4);
-theta  = x(5:6);
-p      = x(7);
+theta  = x(3:4);
+p      = x(5);
 
 %% Input
-%yr = a(1) * sin(w(1)*t) + a(2) * sin(w(2)*t);
+yr = a(1) * sin(w(1)*t) + a(2) * sin(w(2)*t);
 dyr = a(1) * w(1) * cos(w(1)*t) + a(2) * w(2) * cos(w(2)*t);
 ddyr = -a(1) * w(1)^2 * sin(w(1)*t) - a(2) * w(2)^2 * sin(w(2)*t);
 
 %% Variáveis de controle
 phi_1 = [0 -y(1)]';
 phi_2 = [-y(1) 0]';
-%alpha_1 = -c1 * (y(1) - yr) - phi_1'*theta; 
+%% Z
+alpha_1 = -c1 * (y(1) - yr) - phi_1'*theta; 
+z1 = y(1) - yr;
+z2 = y(2) - alpha_1 - dyr; 
 tau_1 = phi_1 * z1;
 tau_2 = tau_1 + (phi_2 + c1 * phi_1) * z2; 
 
@@ -43,9 +45,5 @@ dp = - gamma * sign(kp) * u_bar * z2;
 %% Planta
 dy = Ay*y + By*u;
 
-%% Z
-dz1 = dy(1) - dyr;
-dz2 = dy(2) - (-c1*dy(1) + c1*dyr - phi_1'*dtheta) - ddyr; 
-
 %% Translation
-dx = [dy' dz1 dz2 dtheta' dp]';    
+dx = [dy' dtheta' dp]';    

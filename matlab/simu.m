@@ -23,22 +23,20 @@ c1 = 2;
 c2 = 2;
 Gamma = eye(2);
 gamma = 1;
-tfinal = 20;
+tfinal = 50;
 
 % Initialization
-y0  = [10 0]';
-z10 = 10;
-z20 = 0;
+y0  = [5 0]';
 theta0 = [0 0]';
 p0 = 2;
-init = [y0' z10 z20 theta0' p0]';
+init = [y0' theta0' p0]';
 
 %% Plots
 [T,X] = ode23s('backstepping',tfinal,init,'');
 
 y      = X(:,1);
-theta =  X(:,5:6);
-p = X(:,7);
+theta =  X(:,3:4);
+p = X(:,5);
 
 yr = a(1)*sin(w(1).*T) + a(2)*sin(w(2).*T);
 e =  y - yr;
