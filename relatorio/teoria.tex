@@ -207,7 +207,7 @@ Neste trabalho, consideramos o sistema:
 \label{eq:planta2}
 \end{align}
 
-onde os parâmetros $a_1, a_0 e k_p$ são desconehcidos. Para esta formulação
+onde os parâmetros $a_1$, $a_0$ e $k_p$ são desconehcidos. Para esta formulação
 apenas a saída do sistema $y$ está disponível, portanto $x_2$ não é conhecido e
 deve ser estimado. Podemos reescrever o sistema \ref{eq:planta2}:
 
@@ -265,8 +265,8 @@ estimado é dado por:
 \hat{x} = \xi + \Xi^\intercal\theta + \sum_{i=0}^{m}b_iv_i
 \end{align} 
 
-Porém, este estimador não pode ser estimado, pois $\theta$ não é conhecido. A
-dinâmico do observador pode ser descrita como:
+Porém, este estimador não pode ser usado, pois $\theta$ não é conhecido. A
+dinâmica do observador pode ser descrita como:
 
 \begin{align}
 \dot{\hat{x}} &= \dot{\xi} + \dot{\Xi}^\intercal\theta +
@@ -293,7 +293,7 @@ Desta forma, o sistema \ref{eq:planta2} pode ser representado com os estados do
 observador:
 \begin{align}
 \dot{y} &= k_pv_{0,2} + \xi_2 + \bar{\omega}^\intercal\theta + \epsilon_2\\
-\nonumber \dot{v}_{0,2} = u - k_2v_{0,1}\\
+\nonumber \dot{v}_{0,2} &= u - k_2v_{0,1}\\
 \end{align}
 
 O projeto backstepping agora segue como na seção anterior. Primeiro, fazemos a
@@ -301,7 +301,29 @@ mudança de coordenadas em \textbf{z}:
 
 \begin{align}
 z_1 &= y - y_r \\
-\nonumber z_2 = v_{0,2} - \alpha_{1} - \hat{\rho}\dot{y_r}
+\nonumber z_2 &= v_{0,2} - \alpha_{1} - \hat{\rho}\dot{y_r}
 \end{align}
 
-onde $\rho$ é estimativa de $\frac{1}{k_p}$
+onde $\rho$ é estimativa de $\frac{1}{k_p}$. Nessas condições, é possível
+mostrar por Lyapunov, usando o mesmo procedimento do caso com observador
+completo, que as variáveis de controle são:
+
+\begin{align}
+\alpha_1 &= \hat{\rho}\bar{\alpha_1} \\
+\bar{\alpha}_1 &= -c_1z_1-d_1z_1-\xi_2-\bar{\omega}^\intercal\hat{\theta} \\
+\beta &= k_2v_{0,1} + \frac{\partial\alpha_1}{\partial y}(\xi +
+\omega^\intercal\hat{\theta}) + \frac{\partial \alpha_1}{\partial \eta}
+(A_0\eta + e_2y) + \frac{\partial \alpha_1}{\partial y_r} \dot{y}_r +
+(\dot{y}_r + \frac{\partial \alpha_1}{\partial \hat{\rho}})\hat{\rho}\\
+u &= -c_2z_2 + \beta + \hat{\rho}\ddot{y}_r + \frac{\partial \alpha_1}{\partial
+\hat{\theta}}\hat{\theta} - d_2z_2\left( \frac{\partial \alpha_1}{\partial
+y}\right)^2 - \hat{k}_pz_1
+\end{align}
+
+E as atualizações dos parâemtros são:
+\begin{align}
+\hat{\rho} &= -\gamma z_1 \text{sign}(k_p)(\dot{y}_r + \bar{\alpha}_1)\\
+\hat{\theta} &= \Gamma\tau_2 \\
+\tau_1 &= (\omega - \hat{\rho}(\dot{y}_r + \bar{\alpha}_1)e_1)z_1 \\
+\tau_2 &= \tau_1 - z_2 \frac{\partial \alpha_1}{\partial y} \omega
+\end{align}

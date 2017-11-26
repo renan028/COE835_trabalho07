@@ -2,12 +2,12 @@
 %
 %  COE-835  Controle adaptativo
 %
-%  Script para simular exemplo 
+%  Script para simular o trabalho 7
 %
 %  Backstepping  :  n  = 2     Second and third order plant
 %                   n* = 2     Relative degree
-%                   np = 4, 6     Adaptive parameters
-% Caso sem observador
+%                   np = 3     Adaptive parameters
+% Caso com observador completo
 %----------------------------------------------------------------------
 
 function dx = backstepping_obs(t,x)

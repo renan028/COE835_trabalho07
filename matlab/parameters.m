@@ -20,9 +20,6 @@ e2 = [0 1]';
 % System matrix
 A = [0 1;0 0];
 
-%Monopoli multiplier
-Li = [1 1.5];
-
 %% First parameters
 
 kp_1 = 5;
