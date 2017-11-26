@@ -7,7 +7,7 @@ PRINT = true;
 % PRINT = false;
 
 %Simulation time
-tfinal = 100;
+tfinal = 60;
 
 %Reference
 w = [1 3];
@@ -58,8 +58,8 @@ a_2 = [1 1];
 w_2 = [1 3];
 
 %Initial conditions
-y0_2  = [0 0]';
-theta0_2 = [1 1 1]';
+y0_2  = [5 0]';
+theta0_2 = [0 0 0]';
 eta0_2 = [0 0]';
 lambda0_2 = [0 0]';
 rho0_2 = 0.5;

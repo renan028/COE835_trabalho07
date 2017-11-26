@@ -46,7 +46,7 @@ dady = rho * (- c1 - d1 + [0,e1']*theta);
 dadeta = rho * e2' * A0^2;
 dadyr = rho*(c1 + d1);
 dadtheta = - rho * omega_bar';
-dadrho = -(c1 + d1)*(y(1) - yr) + e2'*A0*eta - omega_bar'*theta;
+dadrho = -(c1 + d1)*(y(1) - yr) + e2'*A0^2*eta - omega_bar'*theta;
 
 
 %% Variables 2
