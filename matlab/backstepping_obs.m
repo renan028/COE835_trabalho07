@@ -41,29 +41,33 @@ alpha_bar = -c1*z1 - d1*z1 - xi(2) - omega_bar'*theta;
 alpha_1 = rho * alpha_bar;
 z2 = v2 - rho*dyr - alpha_1;
 
+%% Filtro eta
+deta = A0*eta + e2*y(1);
+
 %% dalpha/dt
 dady = rho * (- c1 - d1 + [0,e1']*theta);
-dadeta = rho * e2' * A0^2;
+dadeta_deta = rho * (e2' * A0^2 * deta + [0,e2'*A0*deta, e2'*eye(2)*deta]*theta);
 dadyr = rho*(c1 + d1);
 dadtheta = - rho * omega_bar';
-dadrho = -(c1 + d1)*(y(1) - yr) + e2'*A0^2*eta - omega_bar'*theta;
+dadrho = -(c1 + d1)*z1 - e2'*xi - omega_bar'*theta;
 
 
 %% Variables 2
 tau_1 = (omega - rho*(dyr + alpha_bar)*[e1',0]')*z1;
 tau_2 = tau_1 - z2 * (dady * omega); 
 
+
 %% Atualização dos parâmetros
 dtheta = Gamma * tau_2;
 drho = - gamma * z1 * sign(kp) * (dyr + alpha_bar);
 beta = k(2)*v1 + dady * (xi(2) + omega'*theta) + ...
-    dadeta * (A0*eta + e2*y(1)) + dadyr * dyr + (dyr + dadrho) * drho;
+    dadeta_deta + dadyr * dyr + (dyr + dadrho) * drho;
 u = -c2*z2 + beta + rho*ddyr + dadtheta*dtheta - d2*z2*(dady)^2 - ...
-    theta(1)*z1;
+    z1*theta(1);
 
 %% Filtros
 dlambda = A0*lambda + e2*u;
-deta = A0*eta + e2*y(1);
+
 
 
 %% Planta

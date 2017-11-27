@@ -245,10 +245,9 @@ a_0
 Para estimar os estados, utilizamos os filtros abaixo:
 
 \begin{align}
+\label{eq:filtros2}
 \dot{\xi} &= A_0\xi + ky \\
-\nonumber \dot{\Xi}^\intercal &= A_0\Xi^\intercal + \Phi(y) \\
-\nonumber \dot{\lambda} &= A_0\lambda + e_2u \\
-\nonumber v_i &= A_0^i\lambda \\
+\nonumber \dot{\Omega}^\intercal &= A_0\Omega^\intercal + F^\intercal\\
 \nonumber k &=
 \begin{bmatrix}
 k_1\\k_2
@@ -258,25 +257,48 @@ k_1\\k_2
 \end{bmatrix}
 \end{align}
 
-Os valores de $k$ devem ser escolhidos de forma que $A_0$ seja Hurwitz. O estado
-estimado é dado por:
+Os valores de $k$ devem ser escolhidos de forma que $A_0$ seja Hurwitz. E, dessa
+forma, o estado estimado pode ser escrito como:
 
 \begin{align}
-\hat{x} = \xi + \Xi^\intercal\theta + \sum_{i=0}^{m}b_iv_i
-\end{align} 
+\hat{x} = \xi + \Omega^\intercal\theta
+\label{eq:estimador}
+\end{align}
 
-Porém, este estimador não pode ser usado, pois $\theta$ não é conhecido. A
-dinâmica do observador pode ser descrita como:
+Derivando a equação \ref{eq:estimador} e substituindo as equações dos
+filtros \ref{eq:filtros2}, verifica-se que a dinâmica do estimador é igual à
+dinâmica da planta \ref{eq:planta2}.
+
+Porém, $\Omega$ é uma matriz e opta-se pela redução das ordens dos
+filtros. Observe que $\Omega^\intercal = \left[v_0 \quad | \quad \Xi\right]$ e,
+pela equação ~\ref{eq:filtros2}, temos que:
 
 \begin{align}
-\dot{\hat{x}} &= \dot{\xi} + \dot{\Xi}^\intercal\theta +
-\sum_{i=0}^{m}b_i\dot{v}_i \\
-\nonumber &= (A_0\xi + ky) + (A_0\Xi^\intercal +
-\Phi)\theta + \sum_{i=0}^{m}b_iA_0^i(A_0\lambda + e_2u) \\
-\nonumber &= A_0(\xi + \Xi^\intercal\theta + \sum_{i=0}^{m}b_iv_i) + ky +
-\Phi\theta + Bu\\
-\nonumber &= A_0\hat{x} + ky + \Phi\theta + Bu
-\end{align} 
+\dot{v}_0 &= A_0v_0 + e_2u \\
+\dot{\Xi} &= A_0\Xi - Iy
+\end{align}
+
+Introduzem-se dois novos filtros, para substituir os filtros da
+equação~\ref{eq:filtros2}:
+
+\begin{align}
+\dot{\lambda} &= A_0\lambda + e_2u \\
+\dot{\eta} &= A_0\eta + e_2y
+\end{align}
+
+É fácil verificar que, para esta planta de segunda ordem sem zeros ($m=0$), $v_0
+= \lambda$. Para o caso geral, temos que:
+
+\begin{align}
+\dot{\lambda} &= A_0\lambda + e_2u \\
+v_i &= A_0^i\lambda \quad (i=0,\ldots,m)
+\end{align}
+
+É possível demonstrar que:
+\begin{align}
+\Xi &= -\left[A_0\eta \quad \eta\right] \\
+\xi &= -A_0^2\eta
+\end{align}
 
 Podemos reescrever a dinâmica da saída $y$:
 
@@ -304,26 +326,74 @@ z_1 &= y - y_r \\
 \nonumber z_2 &= v_{0,2} - \alpha_{1} - \hat{\rho}\dot{y_r}
 \end{align}
 
-onde $\rho$ é estimativa de $\frac{1}{k_p}$. Nessas condições, é possível
-mostrar por Lyapunov, usando o mesmo procedimento do caso com observador
-completo, que as variáveis de controle são:
+onde $\rho$ é estimativa de $\frac{1}{k_p}$. O controle virtual $\alpha_1$, a
+lei de controle $u$ e as leis de adaptação $\dot{\theta}$ e $\dot{\rho}$ são
+obtidas pelo método de Lyapunov. Derivando $z_1$, obtemos:
 
 \begin{align}
-\alpha_1 &= \hat{\rho}\bar{\alpha_1} \\
-\bar{\alpha}_1 &= -c_1z_1-d_1z_1-\xi_2-\bar{\omega}^\intercal\hat{\theta} \\
-\beta &= k_2v_{0,1} + \frac{\partial\alpha_1}{\partial y}(\xi +
+\dot{z}_1 &= k_p\alpha_1 + \xi_2 + \bar{\omega}^\intercal\theta + \epsilon_2 -
+k_p\tilde{\rho}\dot{y}_r+k_pz_2 \\
+\alpha_1 &= \hat{\rho}\bar{\alpha}_1\\
+\dot{z}_1 &= \bar{\alpha}_1 + \xi_2 + \bar{\omega}^\intercal\theta + \epsilon_2
+- k_p(\dot{y}_r + \bar{\alpha}_1)\tilde{\rho} + k_pz_2
+\end{align}
+
+E escolhemos a primeira função estabilizante:
+\begin{align}
+\bar{\alpha}_1 = -c_1z_1-d_1z_1-\xi_2-\bar{\omega}^\intercal\hat{\theta}
+\end{align}
+
+A dinâmica de $z_1$ pode ser reescrita como:
+\begin{align}
+\dot{z}_1 =
+-c_1z_1-d_1z_1+\epsilon_2+\left[\omega-\hat{\rho}(\dot{y}_r
++ \bar{\alpha}_1)e_1\right]^\intercal\tilde{\theta} -
+k_p(\dot{y}_r+\bar{\alpha}_1)\tilde{\rho} + \hat{k}_pz_2
+\end{align}
+
+Escolhe-se a função de Lyapunov:
+
+\begin{align}
+2V_1 = z_1^2 +
+\tilde{\theta}^\intercal\Gamma^{-1}\tilde{\theta}+|k_p|\gamma^{-1}\tilde{\rho}^2
++ \frac{1}{2d_1}\epsilon^\intercal P\epsilon
+\end{align}
+
+Nessas condições, é possível que a atualização de $\hat{\rho}$ é dada pela
+equação:
+
+\begin{align}
+\hat{\rho} &= -\gamma z_1 \text{sign}(k_p)(\dot{y}_r + \bar{\alpha}_1)
+\end{align}
+
+Derivando $z_2$, obtemos:
+
+\begin{align}
+\dot{z}_2 &= \dot{v}_{0,2} - \hat{\rho}\ddot{y}_r - \dot{hat{\rho}}\dot{y}_r -
+\dot{\alpha}_1 \\
+&= u - k2v_{0,1} - \hat{\rho}\ddot{y}_r - \beta -
+\frac{\partial\alpha_1}{\partial y}(\omega^\intercal\tilde{\omega} + \epsilon_2)
+- \frac{\alpha_1}{\hat{theta}}\dot{\hat{theta}} \\
+\beta &= k_2v_{0,1} + \frac{\partial\alpha_1}{\partial y}(\xi_2 +
 \omega^\intercal\hat{\theta}) + \frac{\partial \alpha_1}{\partial \eta}
 (A_0\eta + e_2y) + \frac{\partial \alpha_1}{\partial y_r} \dot{y}_r +
-(\dot{y}_r + \frac{\partial \alpha_1}{\partial \hat{\rho}})\hat{\rho}\\
+(\dot{y}_r + \frac{\partial \alpha_1}{\partial \hat{\rho}})\dot{\hat{\rho}}
+\end{align}
+
+Escolhe-se a função de Lyapunov:
+
+\begin{align}
+V_2 = V_1 + \frac{1}{2}z_2^2 + \frac{1}{4d_2}\epsilon^\intercal P\epsilon
+\end{align}
+
+É possível mostrar que a atualização de parâmetros e a lei de controle são:
+
+\begin{align}
+\hat{\theta} &= \Gamma\tau_2 \\
+\tau_1 &= (\omega - \hat{\rho}(\dot{y}_r + \bar{\alpha}_1)e_1)z_1 \\
+\tau_2 &= \tau_1 - z_2 \frac{\partial \alpha_1}{\partial y} \omega \\
 u &= -c_2z_2 + \beta + \hat{\rho}\ddot{y}_r + \frac{\partial \alpha_1}{\partial
 \hat{\theta}}\hat{\theta} - d_2z_2\left( \frac{\partial \alpha_1}{\partial
 y}\right)^2 - \hat{k}_pz_1
 \end{align}
 
-E as atualizações dos parâemtros são:
-\begin{align}
-\hat{\rho} &= -\gamma z_1 \text{sign}(k_p)(\dot{y}_r + \bar{\alpha}_1)\\
-\hat{\theta} &= \Gamma\tau_2 \\
-\tau_1 &= (\omega - \hat{\rho}(\dot{y}_r + \bar{\alpha}_1)e_1)z_1 \\
-\tau_2 &= \tau_1 - z_2 \frac{\partial \alpha_1}{\partial y} \omega
-\end{align}
