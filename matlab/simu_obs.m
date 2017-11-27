@@ -19,7 +19,7 @@ kp = kp_1;
 Z = Z_1;
 P = P_1;
 
-thetas_1 = [kp P(2) P(3)]';
+thetas = [kp P(2) P(3)]';
 B = [0 kp]';
 
 
@@ -194,7 +194,7 @@ kp = kp_1;
 Z = Z_1;
 P = P_1;
 
-thetas_2 = [kp P(2) P(3)]';
+thetas = [kp P(2) P(3)]';
 B = [0 kp]';
 
 

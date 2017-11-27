@@ -1,7 +1,7 @@
 clear;
 clc;
 close all;
-global A w;
+global A a w;
 
 PRINT = true;
 %PRINT = false;

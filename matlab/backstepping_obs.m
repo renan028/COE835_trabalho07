@@ -57,18 +57,18 @@ tau_1 = (omega - rho*(dyr + alpha_bar)*[e1',0]')*z1;
 tau_2 = tau_1 - z2 * (dady * omega); 
 
 
-%% Atualização dos parâmetros
+%% Atualizaï¿½ï¿½o dos parï¿½metros
 dtheta = Gamma * tau_2;
 drho = - gamma * z1 * sign(kp) * (dyr + alpha_bar);
 beta = k(2)*v1 + dady * (xi(2) + omega'*theta) + ...
     dadeta_deta + dadyr * dyr + (dyr + dadrho) * drho;
 u = -c2*z2 + beta + rho*ddyr + dadtheta*dtheta - d2*z2*(dady)^2 - ...
     z1*theta(1);
+% u = -c2*z2 + beta + rho*ddyr + dadtheta*dtheta - d2*z2*(dady)^2 - ...
+%  z1/rho;
 
 %% Filtros
 dlambda = A0*lambda + e2*u;
-
-
 
 %% Planta
 F = [B*u Phi];
