@@ -14,17 +14,19 @@ function dx = backstepping_obs(t,x)
 
 global A thetas A0 c1 c2 d1 d2 Gamma gamma kp a w e1 e2 k;
 
-X           = x(1:2);
-y           = e1'*X;
+X           = x(1:2); y = e1'*X;
 theta       = x(3:5);
 lambda      = x(6:7);
 eta         = x(8:9);
 rho         = x(10);
 
 %% Input
-yr = a(1) * sin(w(1)*t) + a(2) * sin(w(2)*t);
-dyr = a(1) * w(1) * cos(w(1)*t) + a(2) * w(2) * cos(w(2)*t);
-ddyr = -a(1) * w(1)^2 * sin(w(1)*t) - a(2) * w(2)^2 * sin(w(2)*t);
+yr=0; dyr=0; ddyr=0;
+for i=1:length(a)
+    yr = yr + a(i)*sin(w(i)*t);
+    dyr = dyr + w(i)*a(i)*cos(w(i)*t);
+    ddyr = ddyr - w(i)^2*a(i)*sin(w(i)*t);
+end
 
 Phi = [-y 0;0 -y];
 
@@ -74,4 +76,4 @@ F = [e2*u Phi];
 dX = A*X + F*thetas;
 
 %% Translation
-dx = [dX' dtheta' dlambda' deta' drho]';    
+dx = [dX' dtheta' dlambda' deta' drho]';
