@@ -16,6 +16,11 @@ e2 = [0 1]';
 % System matrix
 A = [0 1;0 0];
 
+%Reference
+
+a = [1 1];
+w = [1 3];
+
 %% First parameters
 
 kp_1 = 5;
@@ -25,18 +30,15 @@ thetas_1 = [kp_1 P_1(2) P_1(3)]';
 
 k_1 = [1 1]';
 
-a_1 = [1 1];
-w_1 = [1 3];
-
 %Initial conditions
-y0_1  = [0 0]';
-theta0_1 = [1 0 0]';
-eta0_1 = [0 0]';
+X0_1  = [0 0]';
+theta0_1 = [0 0 0]';
 lambda0_1 = [0 0]';
+eta0_1 = [0 0]';
 rho0_1 = 1;
 
 %Adaptation gain
-Gamma_1 = eye(3);
+Gamma_1 = 1;
 gamma_1 = 1;
 c1_1 = 1;
 c2_1 = 1;
@@ -52,18 +54,15 @@ thetas_2 = [kp_2 P_2(2) P_2(3)]';
 
 k_2 = [1 1]';
 
-a_2 = [1 1];
-w_2 = [1 3];
-
 %Initial conditions
-y0_2  = [0 0]';
+X0_2  = [0 0]';
 theta0_2 = [1 1 1]';
-eta0_2 = [0 0]';
 lambda0_2 = [0 0]';
+eta0_2 = [0 0]';
 rho0_2 = 1;
 
 %Adaptation gain
-Gamma_2 = eye(3);
+Gamma_2 = 1;
 gamma_2 = 1;
 c1_2 = 1;
 c2_2 = 1;
