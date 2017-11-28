@@ -10,7 +10,7 @@
 % Com observador completo
 %----------------------------------------------------------------------
 
-global A B thetas A0 c1 c2 d1 d2 Gamma gamma kp a w e1 e2 k;
+global A thetas A0 c1 c2 d1 d2 Gamma gamma kp a w e1 e2 k;
 
 sim_str = strcat('sim0','_');
 
@@ -20,8 +20,6 @@ Z = Z_1;
 P = P_1;
 
 thetas = [kp P(2) P(3)]';
-B = [0 kp]';
-
 
 k = k_1;
 A0 = A - k*e1';
@@ -63,7 +61,6 @@ e0_1 =  y_1 - r_1;
 % P = P_1;
 % 
 % thetas = [kp P(2) P(3)]';
-% B = [0 kp]';
 % 
 % 
 % k = k_1;
@@ -107,7 +104,6 @@ e0_1 =  y_1 - r_1;
 % P = P_2;
 % 
 % thetas_2 = [kp P(2) P(3)]';
-% B = [0 kp]';
 % 
 % 
 % k = k_1;
@@ -151,7 +147,6 @@ e0_1 =  y_1 - r_1;
 % P = P_1;
 % 
 % thetas_2 = [kp P(2) P(3)]';
-% B = [0 kp]';
 % 
 % 
 % k = k_1;
@@ -195,7 +190,6 @@ Z = Z_1;
 P = P_1;
 
 thetas = [kp P(2) P(3)]';
-B = [0 kp]';
 
 
 k = k_1;
