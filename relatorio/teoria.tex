@@ -260,9 +260,8 @@ k_1\\k_2
 Os valores de $k$ devem ser escolhidos de forma que $A_0$ seja Hurwitz. E, dessa
 forma, o estado estimado pode ser escrito como:
 
-\begin{align}
+\begin{align}\label{eq:estimador}
 \hat{x} = \xi + \Omega^\intercal\theta
-\label{eq:estimador}
 \end{align}
 
 Derivando a equação \ref{eq:estimador} e substituindo as equações dos
@@ -373,7 +372,7 @@ Derivando $z_2$, obtemos:
 \dot{\alpha}_1 \\
 &= u - k2v_{0,1} - \hat{\rho}\ddot{y}_r - \beta -
 \frac{\partial\alpha_1}{\partial y}(\omega^\intercal\tilde{\omega} + \epsilon_2)
-- \frac{\alpha_1}{\hat{theta}}\dot{\hat{theta}} \\
+- \frac{\partial\alpha_1}{\partial\hat{\theta}}\dot{\hat{\theta}} \\
 \beta &= k_2v_{0,1} + \frac{\partial\alpha_1}{\partial y}(\xi_2 +
 \omega^\intercal\hat{\theta}) + \frac{\partial \alpha_1}{\partial \eta}
 (A_0\eta + e_2y) + \frac{\partial \alpha_1}{\partial y_r} \dot{y}_r +
