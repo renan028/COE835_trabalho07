@@ -57,7 +57,7 @@ tau_1 = (omega - rho*(dyr + alpha_bar)*[e1',0]')*z1;
 tau_2 = tau_1 - z2 * (dady * omega); 
 
 
-%% Atualizaï¿½ï¿½o dos parï¿½metros
+%% Atualização dos parâmetros
 dtheta = Gamma * tau_2;
 drho = - gamma * z1 * sign(kp) * (dyr + alpha_bar);
 beta = k(2)*v1 + dady * (xi(2) + omega'*theta) + ...

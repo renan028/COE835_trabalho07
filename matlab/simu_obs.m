@@ -20,7 +20,7 @@ Z = Z_1;
 P = P_1;
 
 thetas = thetas_1;
-B = [0 kp]';
+B = [0 1]';
 
 
 k = k_1;
@@ -55,7 +55,7 @@ end
 e0_1 =  y_1 - r_1;
 
 
-% %% Simulation 2 (gamma)
+%% Simulation 2 (gamma)
 % changed = 1;
 % 
 % kp = kp_1;
@@ -63,7 +63,6 @@ e0_1 =  y_1 - r_1;
 % P = P_1;
 % 
 % thetas = thetas_2;
-% B = [0 kp]';
 % 
 % 
 % k = k_1;
@@ -107,7 +106,6 @@ e0_1 =  y_1 - r_1;
 % P = P_2;
 % 
 % thetas = thetas_2;
-% B = [0 kp]';
 % 
 % 
 % k = k_1;
@@ -151,7 +149,6 @@ e0_1 =  y_1 - r_1;
 % P = P_1;
 % 
 % thetas = thetas_2;
-% B = [0 kp]';
 % 
 % 
 % k = k_1;
@@ -195,7 +192,6 @@ Z = Z_1;
 P = P_1;
 
 thetas = thetas_2;
-B = [0 kp]';
 
 
 k = k_1;
