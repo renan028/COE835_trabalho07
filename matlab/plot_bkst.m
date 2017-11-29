@@ -17,9 +17,9 @@ pos_pct = .075;
 
 switch changed
     case 1
-        str1 = strcat('$\gamma=',num2str(gamma_1),'$');
-        str2 = strcat('$\gamma=',num2str(gamma_2),'$');
-        file_name = strcat('gamma',num2str(gamma_1),'gamma',num2str(gamma_2));
+        str1 = strcat('$\Gamma=',num2str(Gamma_1),'$');
+        str2 = strcat('$\Gamma=',num2str(Gamma_2),'$');
+        file_name = strcat('Gamma',num2str(Gamma_1),'Gamma',num2str(Gamma_2));
         
     case 2 
         str1 = '$P_1$';
@@ -32,38 +32,23 @@ switch changed
         file_name = 'yr1yr2';
         
     case 4
-        y0_str_1 = '[\,';
-        for i=1:length(y0)
-            if i ~= length(y0)
-                y0_str_1 = strcat(y0_str_1,num2str(y0_1),'\,\,');
-            else
-                y0_str_1 = strcat(y0_str_1,num2str(y0_1),'\,]');
-            end
-        end
-        y0_str_2 = '[\,';
-        for i=1:length(y0)
-            if i ~= length(y0)
-                y0_str_2 = strcat(y0_str_2,num2str(y0(i)),'\,\,');
-            else
-                y0_str_2 = strcat(y0_str_2,num2str(y0(i)),'\,]');
-            end
-        end
-        str1 = strcat('$y(0)=',y0_str_1,'^T$');
-        str2 = strcat('$y(0)=',y0_str_2,'^T$');
+        y0_str_1 = num2str(X0_1(1));
+        y0_str_2 = num2str(X0_2(1));
+        str1 = strcat('$y(0)=',y0_str_1,'$');
+        str2 = strcat('$y(0)=',y0_str_2,'$');
         file_name = 'y01y02';
         
     case 5
         str1 = '$y(0)_1$';
         str2 = '$y(0)_2$';
         file_name = 'y0';
-        
-        
 end
 
 path_tiltheta = strcat('../relatorio/figs/tiltheta/',sim_str,file_name,'.eps');
 path_modtheta = strcat('../relatorio/figs/modtheta/',sim_str,file_name,'.eps');
 path_e0 = strcat('../relatorio/figs/e0/',sim_str,file_name,'.eps');
 path_y = strcat('../relatorio/figs/y/',sim_str,file_name,'.eps');
+path_rho = strcat('../relatorio/figs/rho/',sim_str,file_name,'.eps');
 
 %--------------- Fig1: til_theta -------------
 figure(1);clf;
@@ -97,7 +82,7 @@ set(gcf,'position',fig_pos);
 plot(T_1,modtt_1);grid on;hold on;
 plot(T_2,modtt_2);
 
-if (changed == 2) || (changed == 3)
+if (changed == 2)
     plot(T_1,norm(thetas_1)*ones(1,length(T_1)));
     plot(T_2,norm(thetas)*ones(1,length(T_2)));
     hold off;
@@ -127,16 +112,16 @@ if PRINT
     print(path_e0,'-depsc2','-painters')
 end
 
-%--------------- Fig3: 4 -------------
+%--------------- Fig3: y -------------
 figure(4);clf;
 set(gcf,'position',[fig_pos(1:2) fig_pos(3) 2*fig_pos(4)]);
 
 h1 = subplot(211);
-plot(T_1,y_1,T_1,r_1);
+plot(T_1,y_1,T_1,r_1);grid on;
 title(strcat('$y_1$ com~ ', str1));
 
 h2 = subplot(212);
-plot(T_2,y_2,T_2,r_2);
+plot(T_2,y_2,T_2,r_2);grid on;
 title(strcat('$y_2$ com~ ', str2));
 % h2.YLim = h1.YLim;
 
@@ -149,4 +134,27 @@ set(gcf,'position',fig_pos);
 
 if PRINT
     print(path_y,'-depsc2','-painters')
+end
+
+%--------------- Fig4: rho -------------
+figure(3);clf;
+set(gcf,'position',fig_pos);
+
+plot(T_1,rho_1);grid;hold on;
+plot(T_2,rho_2);
+
+if (changed == 2)
+    plot(T_1,1/thetas_1(1)*ones(1,length(T_1)));
+    plot(T_2,1/thetas(1)*ones(1,length(T_2)));
+    hold off;
+    legend(str1,str2,'$\rho_1^*$','$\rho_2^*$','Location','SouthEast');
+else
+    plot(T_1,1/thetas(1)*ones(1,length(T_1)));hold off;
+    legend(str1,str2,'$\rho^*$','Location','SouthEast');
+end
+
+title('$\rho$');
+
+if PRINT
+    print(path_rho,'-depsc2','-painters')
 end
