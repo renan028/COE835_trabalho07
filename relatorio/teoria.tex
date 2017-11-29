@@ -75,7 +75,7 @@ Observe que se escolhermos a variação dos parâmetros como
 $\dot{\hat{\theta}}=\Gamma\,\tau_1$ anulamos um dos termos, mas ainda falta
 considerar a dinâmica de $z_2$. Devemos deixar a escolha da lei de adaptação em
 aberto. Pela segunda equação, temos:
-
+ 
 \begin{align}
 \dot{z}_2 &= k_pu + \phi_2^\intercal \, \theta - \dot{\alpha_1}-\ddot{y}_r \\
 \nonumber &= k_pu + \phi_2^\intercal \, \theta -
@@ -368,10 +368,10 @@ equação:
 Derivando $z_2$, obtemos:
 
 \begin{align}
-\dot{z}_2 &= \dot{v}_{0,2} - \hat{\rho}\ddot{y}_r - \dot{hat{\rho}}\dot{y}_r -
+\dot{z}_2 &= \dot{v}_{0,2} - \hat{\rho}\ddot{y}_r - \dot{\hat{\rho}}\dot{y}_r -
 \dot{\alpha}_1 \\
 &= u - k2v_{0,1} - \hat{\rho}\ddot{y}_r - \beta -
-\frac{\partial\alpha_1}{\partial y}(\omega^\intercal\tilde{\omega} + \epsilon_2)
+\frac{\partial\alpha_1}{\partial y}(\omega^\intercal\tilde{\theta} + \epsilon_2)
 - \frac{\partial\alpha_1}{\partial\hat{\theta}}\dot{\hat{\theta}} \\
 \beta &= k_2v_{0,1} + \frac{\partial\alpha_1}{\partial y}(\xi_2 +
 \omega^\intercal\hat{\theta}) + \frac{\partial \alpha_1}{\partial \eta}
